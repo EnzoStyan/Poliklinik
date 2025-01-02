@@ -113,7 +113,11 @@ ob_start();?>
   </div>
 </div>
 
+
+
 <a href="<?=$base_pasien . '/poli';?>" class="btn btn-primary btn-block">Kembali</a>
+
+    
 
 <?php
 $content = ob_get_clean();

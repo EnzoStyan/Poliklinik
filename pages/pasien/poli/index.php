@@ -239,7 +239,58 @@ if (isset($_POST['klik'])) {
         <!-- End registration poli history -->
         </div>
       </div>
+      </br>
+      <?php
+        
+        // Query untuk mengambil riwayat periksa
+        $riwayat = $pdo->prepare(" SELECT pr.tgl_periksa, d.nama AS dokter_nama, pr.catatan, pr.biaya_periksa
+            FROM periksa pr
+            JOIN daftar_poli dp ON pr.id_daftar_poli = dp.id
+            JOIN jadwal_periksa jp ON dp.id_jadwal = jp.id
+            JOIN dokter d ON jp.id_dokter = d.id
+            WHERE dp.id_pasien = ?
+            ORDER BY pr.tgl_periksa DESC
+        ");
+        $riwayat->execute([$id_pasien]);
 
+        // Tampilkan detail poli
+        while($p = $poli->fetch()) {
+            // Tampilkan detail poli seperti sebelumnya
+        }
+
+        // Tampilkan riwayat periksa
+        ?>
+        <div class="card">
+          <div class="card-header bg-info">
+            <h3 class="card-title">Riwayat Periksa Anda</h3>
+          </div>
+          <div class="card-body">
+            <?php if ($riwayat->rowCount() == 0): ?>
+              <h5>Tidak ada riwayat periksa ditemukan.</h5>
+            <?php else: ?>
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>Tanggal Periksa</th>
+                    <th>Dokter</th>
+                    <th>Catatan</th>
+                    <th>Biaya</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php while ($row = $riwayat->fetch()): ?>
+                    <tr>
+                      <td><?= $row['tgl_periksa']; ?></td>
+                      <td><?= $row['dokter_nama']; ?></td>
+                      <td><?= $row['catatan']; ?></td>
+                      <td><?= formatRupiah($row['biaya_periksa']); ?></td>
+                    </tr>
+                  <?php endwhile; ?>
+                </tbody>
+              </table>
+            <?php endif; ?>
+          </div>
+        </div>
       </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->

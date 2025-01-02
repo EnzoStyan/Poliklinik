@@ -148,4 +148,4 @@ $content = ob_get_clean();
 
 </html>
 
-<?php include '../../layouts/index.php'; ?>
+<?php include '../../layouts/index.php';?>
